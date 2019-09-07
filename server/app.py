@@ -1,31 +1,42 @@
 from flask import Flask, request
-#from functions import *
+import time
 
 RED = 'red'
 YELLOW = 'yellow'
 GREEN = 'green'
-OFF = 'off'
-ON = 'on'
 STATUS = ''
+CYCLE_SECONDS = 3
 
 app = Flask(__name__)
 
-def setLight(color, state):
+def setLight(color):
+  # hook into GPIO here
   global STATUS
   STATUS = color
-  return (color, state)
+  print(color)
+  return color
+
+@app.route('/stoplight/cycle')
+def enableCycle():
+  setLight(RED)
+  time.sleep(CYCLE_SECONDS)
+  setLight(YELLOW)
+  time.sleep(CYCLE_SECONDS)
+  setLight(GREEN)
+  time.sleep(CYCLE_SECONDS)
+  return enableCycle()
 
 @app.route('/stoplight/red')
 def enableRed():
-  return setLight(RED, ON)
+  return setLight(RED)
 
 @app.route('/stoplight/yellow')
 def enableYellow():
-  return setLight(YELLOW, ON)
+  return setLight(YELLOW)
 
 @app.route('/stoplight/green')
 def enableGreen():
-  return setLight(GREEN, ON)
+  return setLight(GREEN)
 
 @app.route('/stoplight/status')
 def status():
