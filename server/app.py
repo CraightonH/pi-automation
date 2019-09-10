@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from app_gpio import *
 import time, threading
 
@@ -27,9 +27,6 @@ def cycle():
       setLight(RED)
       time.sleep(CYCLE_SECONDS)
     if CYCLE: # short-circuit the loop
-      setLight(YELLOW)
-      time.sleep(CYCLE_SECONDS)
-    if CYCLE: # short-circuit the loop
       setLight(GREEN)
       time.sleep(CYCLE_SECONDS)
     if CYCLE: # short-circuit the loop
@@ -49,7 +46,11 @@ def enableCycle():
   #   if CYCLE: # short-circuit the loop
   #     setLight(GREEN)
   #     time.sleep(CYCLE_SECONDS)
-  return ''
+  return RED
+
+@app.route('/')
+def index():
+  return render_template('index.html')
 
 @app.route('/stoplight/red')
 def enableRed():
@@ -73,6 +74,8 @@ def enableGreen():
 def off():
   global CYCLE
   CYCLE = False
+  global STATUS
+  STATUS = ''
   stoplight.disable_all()
   return ''
 
