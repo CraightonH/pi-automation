@@ -1,6 +1,6 @@
 from flask import Flask, request
 from app_gpio import *
-import time
+import time, threading
 
 RED = 'red'
 YELLOW = 'yellow'
@@ -19,8 +19,7 @@ def setLight(color):
   stoplight.enable_light(color)
   return color
 
-@app.route('/stoplight/cycle')
-def enableCycle():
+def cycle():
   global CYCLE
   CYCLE = True
   while CYCLE:
@@ -33,7 +32,21 @@ def enableCycle():
     if CYCLE: # short-circuit the loop
       setLight(GREEN)
       time.sleep(CYCLE_SECONDS)
-  return STATUS
+
+@app.route('/stoplight/cycle')
+def enableCycle():
+  threading.Thread(target=cycle, daemon=True).start()
+  # while CYCLE:
+  #   if CYCLE: # short-circuit the loop
+  #     setLight(RED)
+  #     time.sleep(CYCLE_SECONDS)
+  #   if CYCLE: # short-circuit the loop
+  #     setLight(YELLOW)
+  #     time.sleep(CYCLE_SECONDS)
+  #   if CYCLE: # short-circuit the loop
+  #     setLight(GREEN)
+  #     time.sleep(CYCLE_SECONDS)
+  return ''
 
 @app.route('/stoplight/red')
 def enableRed():
