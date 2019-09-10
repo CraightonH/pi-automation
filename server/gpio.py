@@ -1,6 +1,8 @@
-import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM)
+from gpiozero import LED
 
-def cleanup():
-    GPIO.cleanup()
-    
+red = LED(2)
+yellow = LED(3)
+green = LED(4)
+
+def toggleRed():
+    red.on()
