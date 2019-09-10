@@ -1,4 +1,5 @@
 from flask import Flask, request
+from app_gpio import *
 import time
 
 RED = 'red'
@@ -6,6 +7,7 @@ YELLOW = 'yellow'
 GREEN = 'green'
 STATUS = ''
 CYCLE_SECONDS = 3
+stoplight = StopLight()
 
 app = Flask(__name__)
 
@@ -13,7 +15,7 @@ def setLight(color):
   # hook into GPIO here
   global STATUS
   STATUS = color
-  print(color)
+  stoplight.enable_light(color)
   return color
 
 @app.route('/stoplight/cycle')
