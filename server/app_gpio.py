@@ -1,35 +1,36 @@
 from gpiozero import LED
 
 class StopLight(object):
-    red = LED(17)
-    yellow = LED(27)
-    green = LED(22)
+    def __init__(self):
+        self.red = LED(17)
+        self.yellow = LED(27)
+        self.green = LED(22)
+
+    def enable_red(self):
+        self.red.on()
+
+    def disable_red(self):
+        self.red.off()
+
+    def enable_yellow(self):
+        self.yellow.on()
+
+    def disable_yellow(self):
+        self.yellow.off()
+
+    def enable_green(self):
+        self.green.on()
+
+    def disable_green(self):
+        self.green.off()
+
+    def disable_all(self):
+        self.disable_red()
+        self.disable_yellow()
+        self.disable_green()
 
     def enable_light(self, color):
-        disable_all()
+        self.disable_all()
         method_name = 'enable_' + str(color)
         method = getattr(self, method_name)
         method()
-
-    def enable_red():
-        red.on()
-
-    def disable_red():
-        red.off()
-
-    def enable_yellow():
-        yellow.on()
-
-    def disable_yellow():
-        yellow.off()
-
-    def enable_green():
-        green.on()
-
-    def disable_green():
-        green.off()
-
-    def disable_all():
-        disable_red()
-        disable_yellow()
-        disable_green()
