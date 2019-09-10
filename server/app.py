@@ -66,6 +66,13 @@ def enableGreen():
   CYCLE = False
   return setLight(GREEN)
 
+@app.route('/stoplight/off')
+def off():
+  global CYCLE
+  CYCLE = False
+  stoplight.disable_all()
+  return ''
+
 @app.route('/stoplight/status')
 def status():
   global STATUS
