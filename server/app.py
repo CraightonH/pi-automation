@@ -32,6 +32,9 @@ def cycle():
     if CYCLE: # short-circuit the loop
       setLight(GREEN)
       time.sleep(CYCLE_SECONDS)
+    if CYCLE: # short-circuit the loop
+      setLight(YELLOW)
+      time.sleep(CYCLE_SECONDS)
 
 @app.route('/stoplight/cycle')
 def enableCycle():
