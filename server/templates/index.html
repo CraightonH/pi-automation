@@ -45,7 +45,7 @@
         </style>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script>
-            let checkLight = setInterval(getStatus,1000)
+            let checkLight = setInterval(function() { changeLight('status') },1000)
             let APIurl = "http://192.168.1.239/stoplight/"
             let previousLightID = ""
             function setLight(data) {
@@ -56,61 +56,11 @@
                 $("#" + divID).addClass("stoplight-" + data + "-on");
                 previousLightID = divID
             }
-            function getStatus() {
+            function changeLight(endpoint) {
                 $.ajax({
                     type: "GET",
                     dataType: "text",
-                    url: APIurl + "status",
-                    success: function(data) {
-                        setLight(data)
-                    }
-                });
-            }
-            function turnRed() {
-                $.ajax({
-                    type: "GET",
-                    dataType: "text",
-                    url: APIurl + "red",
-                    success: function(data) {
-                        setLight(data)
-                    }
-                });
-            }
-            function turnYellow() {
-                $.ajax({
-                    type: "GET",
-                    dataType: "text",
-                    url: APIurl + "yellow",
-                    success: function(data) {
-                        setLight(data)
-                    }
-                });
-            }
-            function turnGreen() {
-                $.ajax({
-                    type: "GET",
-                    dataType: "text",
-                    url: APIurl + "green",
-                    success: function(data) {
-                        setLight(data)
-                    }
-                });
-            }
-            function beginCycle() {
-                $.ajax({
-                    type: "GET",
-                    dataType: "text",
-                    url: APIurl + "cycle",
-                    success: function(data) {
-                        setLight(data)
-                    }
-                });
-            }
-            function turnOff() {
-                $.ajax({
-                    type: "GET",
-                    dataType: "text",
-                    url: APIurl + "off",
+                    url: APIurl + endpoint,
                     success: function(data) {
                         setLight(data)
                     }
@@ -118,15 +68,15 @@
             }
         </script>
     </head>
-    <body onload="getStatus()">
+    <body onload="changeLight('status')">
         <div class="stoplight-background center">
-            <div id="redLight" class="stoplight-light stoplight-red center" onclick="turnRed();"></div>
-            <div id="yellowLight" class="stoplight-light stoplight-yellow center" onclick="turnYellow();"></div>
-            <div id="greenLight" class="stoplight-light stoplight-green center" onclick="turnGreen();"></div>
+            <div id="redLight" class="stoplight-light stoplight-red center" onclick="changeLight('red');"></div>
+            <div id="yellowLight" class="stoplight-light stoplight-yellow center" onclick="changeLight('yellow');"></div>
+            <div id="greenLight" class="stoplight-light stoplight-green center" onclick="changeLight('green');"></div>
         </div>
         <div class="center">
-                <button id="cycle" onclick="beginCycle();">Cycle</button>
-                <button id="off" onclick="turnOff();">Off</button>
+                <button id="cycle" onclick="changeLight('cycle');">Cycle</button>
+                <button id="off" onclick="changeLight('off');">Off</button>
         </div>
     </body>
 </html>
